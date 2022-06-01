@@ -12,6 +12,6 @@ app.get('/', (request, response) => response.status(200).send({
     info: `API`
 }))
 
-app.get('/accounts', db.getAccounts) //owner_id
+app.post('/sign-in', db.signIn) //owner_id
 
 app.listen(port, () => console.log(`App running on port ${port}.`))

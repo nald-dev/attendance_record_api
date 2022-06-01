@@ -37,18 +37,29 @@ function giveResponse(
   })
 }
 
-const getAccounts = (req: express.Request, res: express.Response) => {
+const signIn = (req: express.Request, res: express.Response) => {
+  const { username, password } = req.fields
+  
   pool.query(
-    `SELECT * FROM accounts;`,
-    [],
+    `SELECT * FROM accounts WHERE username = $1`,
+    [username],
     (err, results) => {
       if(err) {
-        giveResponse(res, 'bad_request', [], `${err.name} : ${err.message}`)
+        giveResponse(res, 'bad_request', {}, `${err.name} : ${err.message}`)
       } else {
         if(results.rows.length > 0) {
-          giveResponse(res, 'success', results.rows, 'Berhasil mendapatkan data catatan')
+          if(password == results.rows[0].password) {
+            const data = {
+              ...results.rows[0],
+              password: undefined
+            }
+  
+            giveResponse(res, 'success', data, 'Berhasil login')
+          } else {
+            giveResponse(res, 'bad_request', {}, 'Password salah')
+          }
         } else {
-          giveResponse(res, 'not_found', [], 'Tidak ditemukan akun dengan id tersebut')
+          giveResponse(res, 'not_found', {}, 'Tidak ditemukan akun dengan username tersebut')
         }
       }
     }
@@ -56,5 +67,5 @@ const getAccounts = (req: express.Request, res: express.Response) => {
 }
 
 export default {
-  getAccounts,
+  signIn,
 }
