@@ -67,7 +67,7 @@ const signIn = (req: express.Request, res: express.Response) => {
 }
 
 const submitStatus = (req: express.Request, res: express.Response) => {
-  const { sender_id, photo, latitude, longitude, type } = req.fields
+  const { sender_id, value, photo, latitude, longitude, type } = req.fields
 
   if (type !== 'login' && type !== 'break' && type !== 'back' && type !== 'logout' && type !== 'leave') {
     giveResponse(res, 'bad_request', {}, `Invalid status type`)
@@ -82,7 +82,7 @@ const submitStatus = (req: express.Request, res: express.Response) => {
           if(results.rows.length > 0) {
             pool.query(
               `INSERT INTO statuses(sender_id, value, photo, latitude, longitude) VALUES($1, $2, $3, $4, $5);`,
-              [sender_id, `${results.rows[0].name} ${type}`, photo, latitude, longitude],
+              [sender_id, value || `${results.rows[0].name} ${type}`, photo, latitude, longitude],
               (err) => {
                 if(err) {
                   giveResponse(res, 'bad_request', {}, `${err.name} : ${err.message}`)
