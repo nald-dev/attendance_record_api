@@ -69,7 +69,7 @@ const signIn = (req: express.Request, res: express.Response) => {
 const submitStatus = (req: express.Request, res: express.Response) => {
   const { sender_id, photo, latitude, longitude, type } = req.fields
 
-  if (type !== 'login' && type !== 'break' && type !== 'back' && type !== 'logout') {
+  if (type !== 'login' && type !== 'break' && type !== 'back' && type !== 'logout' && type !== 'leave') {
     giveResponse(res, 'bad_request', {}, `Invalid status type`)
   } else {
     pool.query(
