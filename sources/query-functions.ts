@@ -10,7 +10,10 @@ const pool = new Pool({
   password: process.env.DATABASE_PASSWORD,
   port: Number(process.env.DATABASE_PORT),
   url: process.env.DATABASE_URL,
-  ssl: true
+  ssl: {
+    rejectUnauthorized: false,
+  },
+  
 } as CustomPoolConfig)
 
 function giveResponse(
