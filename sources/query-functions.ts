@@ -4,12 +4,12 @@ import { Pool, PoolConfig } from 'pg'
 type CustomPoolConfig = PoolConfig & { url: string }
 
 const pool = new Pool({
-  user: "envision",
-  host: "localhost",
-  database: "postgres",
-  password: "",
-  port: 5432,
-  url: ""
+  user: process.env.DATABASE_USER,
+  host: process.env.DATABASE_HOST,
+  database: process.env.DATABASE_NAME,
+  password: process.env.DATABASE_PASSWORD,
+  port: Number(process.env.DATABASE_PORT),
+  url: process.env.DATABASE_URL
 } as CustomPoolConfig)
 
 function giveResponse(
